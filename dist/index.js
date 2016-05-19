@@ -24,7 +24,7 @@ var db = mongoose.connection;
 db.once('open', function () {
   console.log('Connected to resistence_bot db');
 
-  tg.router.when(['/start', '/help', '/settings', '/stop'], 'GlobalController').when(['/vote'], 'VoteController').when(['/join', '/stats'], 'GameController');
+  tg.router.when(['/start', '/help', '/settings', '/stop'], 'GlobalController').when(['/vote'], 'VoteController').when(['/join', '/stats', '/begin'], 'GameController');
 
   tg.controller('VoteController', (0, _vote2.default)(tg));
   tg.controller('GlobalController', (0, _global2.default)(tg));

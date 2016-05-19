@@ -7,6 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function (tg) {
   return function ($) {
     var chat = $.message.chat;
+    var user = $.user;
     console.dir($);
 
     tg.for('/start', function () {
@@ -48,7 +49,15 @@ exports.default = function (tg) {
         $.sendMessage('<send match info here>');
       });
     });
-    tg.for('/help', function () {});
+    tg.for('/help', function () {
+      var message = "";
+      message += "🔻User\n";
+      message += "> Name: " + user.first_name + "\n";
+      message += "> ID: " + user.id + "\n";
+      message += "🔻Bot\n";
+      message += "> telegram.me/ResistenceBot" + "\n";
+      $.sendMessage(message);
+    });
   };
 };
 

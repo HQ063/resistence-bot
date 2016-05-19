@@ -3,6 +3,7 @@ import Group from '../models/Group'
 export default function (tg) {
   return function ($) {
     let chat = $.message.chat
+    let user = $.user
     console.dir($)
 
     tg.for('/start', () => {
@@ -45,7 +46,13 @@ export default function (tg) {
       })
     })
     tg.for('/help', () => {
-
+      var message = ""
+      message += "🔻User\n"
+      message += "> Name: " + user.first_name + "\n"
+      message += "> ID: " + user.id + "\n"
+      message += "🔻Bot\n"
+      message += "> telegram.me/ResistenceBot" + "\n"
+      $.sendMessage(message)
     })
   }
 };
