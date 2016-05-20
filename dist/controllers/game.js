@@ -75,17 +75,30 @@ exports.default = function (tg) {
         var roles = _engine2.default.generateRoles(group.users.length);
         console.log(roles);
 
-        _lodash2.default.zip(group.users, roles).forEach(function (zip) {
-          console.log(zip[0], zip[1]);
+        var zipped = _lodash2.default.zip(group.users, roles);
+        var spyGroup = _lodash2.default.groupBy(zipped, function (z) {
+          return z[1];
+        });
+        console.log(spyGroup);
+        zipped.forEach(function (z) {
           _Player2.default.findOneAndUpdate({
-            _id: zip[0]
+            _id: z[0]
           }, {
-            'group.role': zip[1]
-          }, function (err) {
+            'group.role': z[1]
+          }, {}, function (err, player) {
             if (err) {
               console.error(err);
             }
-            tg.sendMessage(zip[0], 'Your role is: ' + zip[1]);
+            if (!player) {
+              return;
+            }
+            console.log(player);
+            if (player.group.role === 'spy') {
+              // Tell the player who are the spies
+              tg.sendMessage(player._id, 'Spies are ');
+            } else {
+              tg.sendMessage(player._id, 'Your role is: resistence');
+            }
           });
         });
       });

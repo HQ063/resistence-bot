@@ -45,6 +45,9 @@ exports.default = function (tg) {
     });
 
     tg.for('/stop', function () {
+      _Player2.default.remove({
+        'group.id': chat.id
+      });
       _Group2.default.remove({
         _id: chat.id
       }, function (err) {
@@ -71,6 +74,10 @@ var _fs2 = _interopRequireDefault(_fs);
 var _Group = require('../models/Group');
 
 var _Group2 = _interopRequireDefault(_Group);
+
+var _Player = require('../models/Player');
+
+var _Player2 = _interopRequireDefault(_Player);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

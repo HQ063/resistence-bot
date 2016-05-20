@@ -1,5 +1,6 @@
 import fs from 'fs'
 import Group from '../models/Group'
+import Player from '../models/Player'
 
 export default function (tg) {
   return function ($) {
@@ -42,6 +43,9 @@ export default function (tg) {
     })
 
     tg.for('/stop', () => {
+      Player.remove({
+        'group.id': chat.id
+      })
       Group.remove({
         _id: chat.id
       }, (err) => {

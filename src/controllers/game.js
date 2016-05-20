@@ -77,17 +77,30 @@ export default function (tg) {
         let roles = Engine.generateRoles(group.users.length)
         console.log(roles)
 
-        _.zip(group.users, roles).forEach((zip) => {
-          console.log(zip[0], zip[1])
+        let zipped = _.zip(group.users, roles)
+        let spyGroup = _.groupBy(zipped, (z) => {
+          return z[1]
+        })
+        console.log(spyGroup)
+        zipped.forEach((z) => {
           Player.findOneAndUpdate({
-            _id: zip[0]
+            _id: z[0]
           }, {
-            'group.role': zip[1]
-          }, (err) => {
+            'group.role': z[1]
+          }, {}, (err, player) => {
             if (err) {
               console.error(err)
             }
-            tg.sendMessage(zip[0], 'Your role is: ' + zip[1])
+            if (!player) {
+              return
+            }
+            console.log(player)
+            if (player.group.role === 'spy') {
+              // Tell the player who are the spies
+              tg.sendMessage(player._id, 'Spies are ')
+            } else {
+              tg.sendMessage(player._id, 'Your role is: resistence')
+            }
           })
         })
       })
