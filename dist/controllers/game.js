@@ -31,7 +31,23 @@ exports.default = function (tg) {
             if (err) {
               return console.error(err);
             }
-            $.sendMessage('User ' + user.first_name + ' has joined');
+
+            var player = new _Player2.default({
+              _id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              group: {
+                id: group.id,
+                name: group.name
+              }
+            });
+
+            player.save(function (err) {
+              if (err) {
+                return console.error(err);
+              }
+              $.sendMessage('User ' + user.first_name + ' has joined');
+            });
           });
         }
       });
@@ -48,7 +64,7 @@ exports.default = function (tg) {
       });
     });
 
-    tg.for('/begin', function () {
+    tg.for('/start', function () {
       _Group2.default.findOne({
         _id: chat.id
       }, function (err, group) {
@@ -61,8 +77,16 @@ exports.default = function (tg) {
 
         _lodash2.default.zip(group.users, roles).forEach(function (zip) {
           console.log(zip[0], zip[1]);
-
-          tg.sendMessage(zip[0], 'Your role is: ' + zip[1]);
+          _Player2.default.findOneAndUpdate({
+            _id: zip[0]
+          }, {
+            'group.role': zip[1]
+          }, function (err) {
+            if (err) {
+              console.error(err);
+            }
+            tg.sendMessage(zip[0], 'Your role is: ' + zip[1]);
+          });
         });
       });
     });
@@ -72,6 +96,10 @@ exports.default = function (tg) {
 var _Group = require('../models/Group');
 
 var _Group2 = _interopRequireDefault(_Group);
+
+var _Player = require('../models/Player');
+
+var _Player2 = _interopRequireDefault(_Player);
 
 var _lodash = require('lodash');
 

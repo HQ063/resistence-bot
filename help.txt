@@ -3,11 +3,11 @@
 
 - Group Only
 /help - Help about this bot
-/start - Start a new game
+/new - Start a new game
 /join - Join the game as a player
+/start - Distribute player roles
 /stop - Stop the game
 /stats - Show game statistics
-/begin - Distribute player roles
 
 - Private Message Only
 /vote - Open vote options

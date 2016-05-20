@@ -36,7 +36,7 @@ db.once('open', function () {
 
   var tg = require('telegram-node-bot')(process.env.RESISTENCE_BOT_TOKEN);
 
-  tg.router.when(['/start', '/help', '/settings', '/stop'], 'GlobalController').when(['/vote'], 'VoteController').when(['/join', '/stats', '/begin'], 'GameController');
+  tg.router.when(['/new', '/help', '/settings', '/stop'], 'GlobalController').when(['/vote'], 'VoteController').when(['/join', '/stats', '/start'], 'GameController');
 
   tg.controller('VoteController', (0, _vote2.default)(tg));
   tg.controller('GlobalController', (0, _global2.default)(tg));

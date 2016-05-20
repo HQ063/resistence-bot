@@ -10,7 +10,7 @@ exports.default = function (tg) {
     var user = $.user;
     console.dir($);
 
-    tg.for('/start', function () {
+    tg.for('/new', function () {
       if (chat && chat.type === 'group') {
         var group = new _Group2.default({
           _id: chat.id,

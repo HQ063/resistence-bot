@@ -1,4 +1,5 @@
 import Group from '../models/Group'
+import Player from '../models/Player'
 import _ from 'lodash'
 import Engine from '../engine'
 
@@ -29,7 +30,23 @@ export default function (tg) {
             if (err) {
               return console.error(err)
             }
-            $.sendMessage(`User ${user.first_name} has joined`)
+
+            let player = new Player({
+              _id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              group: {
+                id: group.id,
+                name: group.name
+              }
+            })
+
+            player.save((err) => {
+              if (err) {
+                return console.error(err)
+              }
+              $.sendMessage(`User ${user.first_name} has joined`)
+            })
           })
         }
       })
@@ -49,7 +66,7 @@ export default function (tg) {
       })
     })
 
-    tg.for('/begin', () => {
+    tg.for('/start', () => {
       Group.findOne({
         _id: chat.id
       }, function (err, group) {
@@ -62,8 +79,16 @@ export default function (tg) {
 
         _.zip(group.users, roles).forEach((zip) => {
           console.log(zip[0], zip[1])
-
-          tg.sendMessage(zip[0], 'Your role is: ' + zip[1])
+          Player.findOneAndUpdate({
+            _id: zip[0]
+          }, {
+            'group.role': zip[1]
+          }, (err) => {
+            if (err) {
+              console.error(err)
+            }
+            tg.sendMessage(zip[0], 'Your role is: ' + zip[1])
+          })
         })
       })
     })

@@ -7,7 +7,7 @@ export default function (tg) {
     let user = $.user
     console.dir($)
 
-    tg.for('/start', () => {
+    tg.for('/new', () => {
       if (chat && chat.type === 'group') {
         let group = new Group({
           _id: chat.id,
