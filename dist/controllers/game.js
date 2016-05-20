@@ -72,6 +72,10 @@ exports.default = function (tg) {
           return console.error(err);
         }
 
+        if (!group) {
+          return $.sendMessage('Create the game first /new');
+        }
+
         var roles = _engine2.default.generateRoles(group.users.length);
         console.log(roles);
 

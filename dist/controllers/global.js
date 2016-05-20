@@ -47,6 +47,10 @@ exports.default = function (tg) {
     tg.for('/stop', function () {
       _Player2.default.remove({
         'group.id': chat.id
+      }, function (err) {
+        if (err) {
+          console.error(err);
+        }
       });
       _Group2.default.remove({
         _id: chat.id
@@ -59,7 +63,14 @@ exports.default = function (tg) {
     });
 
     tg.for('/help', function () {
-      _fs2.default.readFile(global.App.root + '/help.txt', function (err, data) {
+      _fs2.default.readFile(global.App.root + '/group-help.txt', function (err, data) {
+        if (err) throw err;
+        $.sendMessage(data.toString());
+      });
+    });
+
+    tg.for('/start', function () {
+      _fs2.default.readFile(global.App.root + '/private-help.txt', function (err, data) {
         if (err) throw err;
         $.sendMessage(data.toString());
       });

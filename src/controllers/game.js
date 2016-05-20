@@ -74,6 +74,10 @@ export default function (tg) {
           return console.error(err)
         }
 
+        if (!group) {
+          return $.sendMessage('Create the game first /new')
+        }
+
         let roles = Engine.generateRoles(group.users.length)
         console.log(roles)
 

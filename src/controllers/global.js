@@ -45,6 +45,10 @@ export default function (tg) {
     tg.for('/stop', () => {
       Player.remove({
         'group.id': chat.id
+      }, (err) => {
+        if (err) {
+          console.error(err)
+        }
       })
       Group.remove({
         _id: chat.id
@@ -57,7 +61,14 @@ export default function (tg) {
     })
 
     tg.for('/help', () => {
-      fs.readFile(global.App.root + '/help.txt', (err, data) => {
+      fs.readFile(global.App.root + '/group-help.txt', (err, data) => {
+        if (err) throw err
+        $.sendMessage(data.toString())
+      })
+    })
+
+    tg.for('/start', () => {
+      fs.readFile(global.App.root + '/private-help.txt', (err, data) => {
         if (err) throw err
         $.sendMessage(data.toString())
       })
