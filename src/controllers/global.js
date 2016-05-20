@@ -1,36 +1,13 @@
-import fs from 'fs'
+import utils from './utils'
 import Group from '../models/Group'
-import Player from '../models/Player'
 
 export default function (tg) {
   return function ($) {
     let chat = $.message.chat
-    let user = $.user
-    console.dir($)
+    // let user = $.user
 
-    tg.for('/new', () => {
-      if (chat && chat.type === 'group') {
-        let group = new Group({
-          _id: chat.id,
-          name: chat.title,
-          host: $.user // host starts the match
-        })
-        group.save((err, g) => {
-          if (err) {
-            console.error(err)
-            if (err.code === 11000) {
-              $.sendMessage('Ops! A Match has already been started.')
-            }
-          } else {
-            let message = ''
-            message += '🎲 The Match has started 🎲\n🏁\n'
-            message += `Host: ${user.first_name}\n`
-            message += 'Please add @ResistenceBot\n'
-            message += 'use /join to enter'
-            $.sendMessage(message)
-          }
-        })
-      }
+    tg.for('/start', () => {
+      utils.sendTextFile($, 'private-help.txt')
     })
 
     tg.for('/settings', () => {
@@ -42,36 +19,12 @@ export default function (tg) {
       })
     })
 
-    tg.for('/stop', () => {
-      Player.remove({
-        'group.id': chat.id
-      }, (err) => {
-        if (err) {
-          console.error(err)
-        }
-      })
-      Group.remove({
-        _id: chat.id
-      }, (err) => {
-        if (err) {
-          return console.error(err)
-        }
-        $.sendMessage('<send match info here>')
-      })
-    })
-
     tg.for('/help', () => {
-      fs.readFile(global.App.root + '/group-help.txt', (err, data) => {
-        if (err) throw err
-        $.sendMessage(data.toString())
-      })
+      utils.sendTextFile($, 'group-help.txt')
     })
 
-    tg.for('/start', () => {
-      fs.readFile(global.App.root + '/private-help.txt', (err, data) => {
-        if (err) throw err
-        $.sendMessage(data.toString())
-      })
+    tg.for('/rules', () => {
+      utils.sendTextFile($, 'rules.txt')
     })
   }
 };

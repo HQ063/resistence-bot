@@ -8,17 +8,17 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
-var _vote = require('./controllers/vote');
-
-var _vote2 = _interopRequireDefault(_vote);
-
 var _global = require('./controllers/global');
 
 var _global2 = _interopRequireDefault(_global);
 
-var _game = require('./controllers/game');
+var _group = require('./controllers/group');
 
-var _game2 = _interopRequireDefault(_game);
+var _group2 = _interopRequireDefault(_group);
+
+var _player = require('./controllers/player');
+
+var _player2 = _interopRequireDefault(_player);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,9 +36,9 @@ db.once('open', function () {
 
   var tg = require('telegram-node-bot')(process.env.RESISTENCE_BOT_TOKEN);
 
-  tg.router.when(['/start', '/help', '/settings'], 'GlobalController').when(['/vote'], 'VoteController').when(['/new', '/join', '/stats', '/stop'], 'GameController');
+  tg.router.when(['/start', '/help', '/settings', '/rules'], 'GlobalController').when(['/vote', '/me'], 'PlayerController').when(['/new', '/join', '/stats', '/stop'], 'GroupController');
 
-  tg.controller('VoteController', (0, _vote2.default)(tg));
   tg.controller('GlobalController', (0, _global2.default)(tg));
-  tg.controller('GameController', (0, _game2.default)(tg));
+  tg.controller('PlayerController', (0, _player2.default)(tg));
+  tg.controller('GroupController', (0, _group2.default)(tg));
 });

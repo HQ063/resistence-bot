@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import path from 'path'
-import VoteController from './controllers/vote'
 import GlobalController from './controllers/global'
-import GameController from './controllers/game'
+import GroupController from './controllers/group'
+import PlayerController from './controllers/player'
 
 // Register App globals
 global.App = {
@@ -19,11 +19,11 @@ db.once('open', () => {
   const tg = require('telegram-node-bot')(process.env.RESISTENCE_BOT_TOKEN)
 
   tg.router
-    .when(['/start', '/help', '/settings'], 'GlobalController')
-    .when(['/vote'], 'VoteController')
-    .when(['/new', '/join', '/stats', '/stop'], 'GameController')
+    .when(['/start', '/help', '/settings', '/rules'], 'GlobalController')
+    .when(['/vote', '/me'], 'PlayerController')
+    .when(['/new', '/join', '/stats', '/stop'], 'GroupController')
 
-  tg.controller('VoteController', VoteController(tg))
   tg.controller('GlobalController', GlobalController(tg))
-  tg.controller('GameController', GameController(tg))
+  tg.controller('PlayerController', PlayerController(tg))
+  tg.controller('GroupController', GroupController(tg))
 })

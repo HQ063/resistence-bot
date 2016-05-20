@@ -1,0 +1,24 @@
+The Resistance ⚖ Rules
+
+After a /new game has been created
+all players may /join the match.
+
+Then, the host may /begin and each
+player will secretly receive their
+role.
+
+The player who holds the /turn may
+send other players into a /mission
+by choosing who will be send.
+
+All players whom are on a mission
+may secretly /vote to be Approve ✅
+or to Sabotage 💣.
+
+If at least one player sabotaged 💣,
+the mission will fail and the spies
+win 1 point. Otherwise, the point
+goes to the resistance.
+
+When the game /stop, the side
+with the majority score wins.

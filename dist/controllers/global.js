@@ -7,32 +7,10 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function (tg) {
   return function ($) {
     var chat = $.message.chat;
-    var user = $.user;
-    console.dir($);
+    // let user = $.user
 
-    tg.for('/new', function () {
-      if (chat && chat.type === 'group') {
-        var group = new _Group2.default({
-          _id: chat.id,
-          name: chat.title,
-          host: $.user // host starts the match
-        });
-        group.save(function (err, g) {
-          if (err) {
-            console.error(err);
-            if (err.code === 11000) {
-              $.sendMessage('Ops! A Match has already been started.');
-            }
-          } else {
-            var message = '';
-            message += '🎲 The Match has started 🎲\n🏁\n';
-            message += 'Host: ' + user.first_name + '\n';
-            message += 'Please add @ResistenceBot\n';
-            message += 'use /join to enter';
-            $.sendMessage(message);
-          }
-        });
-      }
+    tg.for('/start', function () {
+      _utils2.default.sendTextFile($, 'private-help.txt');
     });
 
     tg.for('/settings', function () {
@@ -44,51 +22,23 @@ exports.default = function (tg) {
       });
     });
 
-    tg.for('/stop', function () {
-      _Player2.default.remove({
-        'group.id': chat.id
-      }, function (err) {
-        if (err) {
-          console.error(err);
-        }
-      });
-      _Group2.default.remove({
-        _id: chat.id
-      }, function (err) {
-        if (err) {
-          return console.error(err);
-        }
-        $.sendMessage('<send match info here>');
-      });
-    });
-
     tg.for('/help', function () {
-      _fs2.default.readFile(global.App.root + '/group-help.txt', function (err, data) {
-        if (err) throw err;
-        $.sendMessage(data.toString());
-      });
+      _utils2.default.sendTextFile($, 'group-help.txt');
     });
 
-    tg.for('/start', function () {
-      _fs2.default.readFile(global.App.root + '/private-help.txt', function (err, data) {
-        if (err) throw err;
-        $.sendMessage(data.toString());
-      });
+    tg.for('/rules', function () {
+      _utils2.default.sendTextFile($, 'rules.txt');
     });
   };
 };
 
-var _fs = require('fs');
+var _utils = require('./utils');
 
-var _fs2 = _interopRequireDefault(_fs);
+var _utils2 = _interopRequireDefault(_utils);
 
 var _Group = require('../models/Group');
 
 var _Group2 = _interopRequireDefault(_Group);
-
-var _Player = require('../models/Player');
-
-var _Player2 = _interopRequireDefault(_Player);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

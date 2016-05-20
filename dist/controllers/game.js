@@ -9,6 +9,31 @@ exports.default = function (tg) {
     var chat = $.message.chat;
     var user = $.user;
 
+    tg.for('/new', function () {
+      if (chat && chat.type === 'group') {
+        var group = new _Group2.default({
+          _id: chat.id,
+          name: chat.title,
+          host: $.user // host starts the match
+        });
+        group.save(function (err, g) {
+          if (err) {
+            console.error(err);
+            if (err.code === 11000) {
+              $.sendMessage('Ops! A Match has already been started.');
+            }
+          } else {
+            var message = '';
+            message += '🎲 The Match has started 🎲\n🏁\n';
+            message += 'Host: ' + user.first_name + '\n';
+            message += 'Please add @ResistenceBot\n';
+            message += 'use /join to enter';
+            $.sendMessage(message);
+          }
+        });
+      }
+    });
+
     tg.for('/join', function () {
       _Group2.default.findOne({
         _id: chat.id
@@ -107,6 +132,28 @@ exports.default = function (tg) {
         });
       });
     });
+
+    tg.for('/stop', function () {
+      _Player2.default.remove({
+        'group.id': chat.id
+      }, function (err) {
+        if (err) {
+          console.error(err);
+        }
+      });
+      _Group2.default.remove({
+        _id: chat.id
+      }, function (err) {
+        if (err) {
+          return console.error(err);
+        }
+        $.sendMessage('<send match info here>');
+      });
+    });
+
+    tg.for('/rules', function () {
+      _utils2.default.sendTextFile($, 'rules.txt');
+    });
   };
 };
 
@@ -125,6 +172,10 @@ var _lodash2 = _interopRequireDefault(_lodash);
 var _engine = require('../engine');
 
 var _engine2 = _interopRequireDefault(_engine);
+
+var _utils = require('./utils');
+
+var _utils2 = _interopRequireDefault(_utils);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

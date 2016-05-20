@@ -2,11 +2,40 @@ import Group from '../models/Group'
 import Player from '../models/Player'
 import _ from 'lodash'
 import Engine from '../engine'
+import utils from './utils'
 
 export default function (tg) {
   return function ($) {
     let chat = $.message.chat
     let user = $.user
+
+    if (chat.type !== 'group') {
+      return
+    }
+
+
+    tg.for('/new', () => {
+      let group = new Group({
+        _id: chat.id,
+        name: chat.title,
+        host: $.user // host starts the match
+      })
+      group.save((err, g) => {
+        if (err) {
+          console.error(err)
+          if (err.code === 11000) {
+            $.sendMessage('Ops! A Match has already been started.')
+          }
+        } else {
+          let message = ''
+          message += '🎲 The Match has started 🎲\n🏁\n'
+          message += `Host: ${user.first_name}\n`
+          message += 'Please add @ResistenceBot\n'
+          message += 'use /join to enter'
+          $.sendMessage(message)
+        }
+      })
+    })
 
     tg.for('/join', () => {
       Group.findOne({
@@ -107,6 +136,24 @@ export default function (tg) {
             }
           })
         })
+      })
+    })
+
+    tg.for('/stop', () => {
+      Player.remove({
+        'group.id': chat.id
+      }, (err) => {
+        if (err) {
+          console.error(err)
+        }
+      })
+      Group.remove({
+        _id: chat.id
+      }, (err) => {
+        if (err) {
+          return console.error(err)
+        }
+        $.sendMessage('<send match info here>')
       })
     })
   }
