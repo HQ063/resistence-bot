@@ -141,23 +141,21 @@ export default function (tg) {
     })
 
     tg.for('/stop', () => {
-      // ONLY THE HOST CAN stop
-
-      // Player.remove({
-      //   'group.id': chat.id
-      // }, (err) => {
-      //   if (err) {
-      //     console.error(err)
-      //   }
-      // })
-      // Group.remove({
-      //   _id: chat.id
-      // }, (err) => {
-      //   if (err) {
-      //     return console.error(err)
-      //   }
-      //   $.sendMessage('<send match info here>')
-      // })
+      Group.findOne({
+        _id: chat.id,
+        'host.id': user.id // only the host may stop
+      }, (err, group) => {
+        if (err) {
+          return console.error(err)
+        }
+        if (!group) {
+          console.log(`Group ${chat.id} not found or ${user.id} is not the host`)
+          return
+        }
+        group.remove()
+        let results = Engine.matchResults(group)
+        $.sendMessage(results)
+      })
     })
 
     tg.for('/mission', () => {

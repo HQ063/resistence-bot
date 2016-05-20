@@ -20,5 +20,6 @@ the mission will fail and the spies
 win 1 point. Otherwise, the point
 goes to the resistance.
 
-When the game /stop, the side
-with the majority score wins.
+When the game /stop, if the Resistance
+has the a score greater then The Spies
+they win, otherwise, The Spies win.

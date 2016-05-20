@@ -14,6 +14,14 @@ const Engine = {
 
     return _.shuffle(roles)
   },
+  matchResults: (group) => {
+    let w = group.score_resistance > group.score_spy ? 'Resistance' : 'Spies'
+    let results = '🏁 Match Results 🏁\n\n'
+    results += 'Spy Score: ' + group.score_spy + '\n'
+    results += 'Resistance Score: ' + group.score_resistance + '\n'
+    results += '\n and the winner is ...\n\n🏆 The ' + w
+    return results
+  },
   canVote: (userId) => {
     return VOTE_CACHE[userId] === undefined
   },
