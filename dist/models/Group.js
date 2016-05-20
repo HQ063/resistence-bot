@@ -49,6 +49,11 @@ groupSchema.statics.mission = function mission(_id, players, callback) {
       return callback(err);
     }
 
+    if (!group) {
+      console.log('Group not found:', _id);
+      return;
+    }
+
     var usersId = _utils2.default.zipWithIndex(group.users).filter(function (tuple) {
       return _lodash2.default.includes(players, tuple[0]);
     }).map(function (tuple) {

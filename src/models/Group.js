@@ -31,6 +31,11 @@ groupSchema.statics.mission = function mission (_id, players, callback) {
       return callback(err)
     }
 
+    if (!group) {
+      console.log('Group not found:', _id)
+      return
+    }
+
     let usersId = utils.zipWithIndex(group.users).filter((tuple) => {
       return _.includes(players, tuple[0])
     }).map((tuple) => {

@@ -44,7 +44,7 @@ export default function (tg) {
               winner = 'Spies'
               group.score_spy += 1
             } else {
-              winner = 'Resistence'
+              winner = 'Resistance'
               group.score_resistance += 1
             }
 

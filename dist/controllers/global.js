@@ -10,16 +10,13 @@ exports.default = function (tg) {
     // let user = $.user
 
     tg.for('/start', function () {
-      _utils2.default.sendTextFile($, 'private-help.txt');
+      if (chat.type === 'private') {
+        _utils2.default.sendTextFile($, 'private-help.txt');
+      }
     });
 
     tg.for('/settings', function () {
-      _Group2.default.findOne({
-        _id: chat.id
-      }, function (err, group) {
-        if (err) throw err;
-        $.sendMessage(JSON.stringify(group, null, 2));
-      });
+      // TODO Not implemented yet
     });
 
     tg.for('/help', function () {
@@ -35,10 +32,6 @@ exports.default = function (tg) {
 var _utils = require('./utils');
 
 var _utils2 = _interopRequireDefault(_utils);
-
-var _Group = require('../models/Group');
-
-var _Group2 = _interopRequireDefault(_Group);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

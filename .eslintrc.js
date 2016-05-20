@@ -3,6 +3,7 @@ module.exports = {
     "plugins": ["standard"],
     "env" : {
         "node": true,
-        "es6": true
+        "es6": true,
+        "mocha": true
     }
 };

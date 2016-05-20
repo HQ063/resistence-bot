@@ -5,13 +5,18 @@ let VOTE_CACHE = {}
 
 const Engine = {
   generateRoles: (n) => {
-    let totalResistence = Math.round(n * (3 / 4))
-    let totalSpies = Math.round(n * (1 / 4))
+    // Use a function that aproximates the original game role distribution
+    function round (n) {
+      if ((n % 1) >= 0.7) {
+        return Math.ceil(n)
+      }
+      return Math.floor(n)
+    }
 
-    let resistence = _.times(totalResistence, _.constant('resistence'))
+    let totalSpies = round(n * (2 / 5))
     let spies = _.times(totalSpies, _.constant('spy'))
-    let roles = _.concat(resistence, spies)
-
+    let resistance = _.times(n - totalSpies, _.constant('resistance'))
+    let roles = _.concat(resistance, spies)
     return _.shuffle(roles)
   },
   matchResults: (group) => {

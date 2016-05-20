@@ -1,5 +1,4 @@
 import utils from './utils'
-import Group from '../models/Group'
 
 export default function (tg) {
   return function ($) {
@@ -7,16 +6,13 @@ export default function (tg) {
     // let user = $.user
 
     tg.for('/start', () => {
-      utils.sendTextFile($, 'private-help.txt')
+      if (chat.type === 'private') {
+        utils.sendTextFile($, 'private-help.txt')
+      }
     })
 
     tg.for('/settings', () => {
-      Group.findOne({
-        _id: chat.id
-      }, (err, group) => {
-        if (err) throw err
-        $.sendMessage(JSON.stringify(group, null, 2))
-      })
+      // TODO Not implemented yet
     })
 
     tg.for('/help', () => {

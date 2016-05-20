@@ -59,7 +59,7 @@ export default function (tg) {
               return console.error(err)
             }
 
-            let player = new Player({
+            Player.update({
               _id: user.id,
               first_name: user.first_name,
               last_name: user.last_name,
@@ -67,9 +67,10 @@ export default function (tg) {
                 id: group.id,
                 name: group.name
               }
-            })
-
-            player.save((err) => {
+            }, {
+              upsert: true
+            },
+            (err) => {
               if (err) {
                 return console.error(err)
               }
@@ -87,6 +88,11 @@ export default function (tg) {
         if (err) {
           return console.error(err)
         }
+        if (!group) {
+          console.log('Group not found:', chat.id)
+          return
+        }
+
         let message = ''
         message += 'Players:\n'
         utils.zipWithIndex(group.users).forEach((tuple) => {
@@ -133,7 +139,7 @@ export default function (tg) {
               // Tell the player who are the spies
               tg.sendMessage(player._id, 'Spies are ')
             } else {
-              tg.sendMessage(player._id, 'Your role is: resistence')
+              tg.sendMessage(player._id, 'Your role is: resistance')
             }
           })
         })

@@ -7,9 +7,9 @@ Then, the host may /begin and each
 player will secretly receive their
 role.
 
-The player who holds the /turn may
-send other players into a /mission
-by choosing who will be send.
+A player can them send other players
+into a /mission by choosing who will
+be send.
 
 All players whom are on a mission
 may secretly /vote to be Approve ✅
