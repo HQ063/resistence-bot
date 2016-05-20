@@ -23,6 +23,14 @@ var groupSchema = _mongoose2.default.Schema({
   name: String,
   host: Object,
   users: Array,
+  score_spy: {
+    type: Number,
+    default: 0
+  },
+  score_resistance: {
+    type: Number,
+    default: 0
+  },
   mission: {
     players: Array,
     votes: Array
