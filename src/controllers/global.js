@@ -1,3 +1,4 @@
+import fs from 'fs'
 import Group from '../models/Group'
 
 export default function (tg) {
@@ -17,12 +18,16 @@ export default function (tg) {
           if (err) {
             console.error(err)
             if (err.code === 11000) {
-              $.sendMessage('Group already started!')
-            } else {
-              $.sendMessage(`Groud id: ${g}`)
+              $.sendMessage('Ops! A Match has already been started.')
             }
+          } else {
+            let message = ''
+            message += '🎲 The Match has started 🎲\n🏁\n'
+            message += `Host: ${user.first_name}\n`
+            message += 'Please add @ResistenceBot\n'
+            message += 'use /join to enter'
+            $.sendMessage(message)
           }
-          $.sendMessage('')
         })
       }
     })
@@ -35,6 +40,7 @@ export default function (tg) {
         $.sendMessage(JSON.stringify(group, null, 2))
       })
     })
+
     tg.for('/stop', () => {
       Group.remove({
         _id: chat.id
@@ -45,14 +51,12 @@ export default function (tg) {
         $.sendMessage('<send match info here>')
       })
     })
+
     tg.for('/help', () => {
-      var message = ''
-      message += '🔻User\n'
-      message += '> Name: ' + user.first_name + '\n'
-      message += '> ID: ' + user.id + '\n'
-      message += '🔻Bot\n'
-      message += '> telegram.me/ResistenceBot\n'
-      $.sendMessage(message)
+      fs.readFile(global.App.root + '/help.txt', (err, data) => {
+        if (err) throw err
+        $.sendMessage(data.toString())
+      })
     })
   }
 };

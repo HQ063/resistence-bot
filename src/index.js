@@ -1,9 +1,13 @@
+import mongoose from 'mongoose'
+import path from 'path'
 import VoteController from './controllers/vote'
 import GlobalController from './controllers/global'
 import GameController from './controllers/game'
 
-const tg = require('telegram-node-bot')(process.env.RESISTENCE_BOT_TOKEN)
-const mongoose = require('mongoose')
+// Register App globals
+global.App = {
+  root: path.resolve(__dirname, '..')
+}
 
 // Connect to db
 mongoose.connect('mongodb://localhost/resistence_bot')
@@ -11,6 +15,8 @@ const db = mongoose.connection
 
 db.once('open', () => {
   console.log('Connected to resistence_bot db')
+
+  const tg = require('telegram-node-bot')(process.env.RESISTENCE_BOT_TOKEN)
 
   tg.router
     .when(['/start', '/help', '/settings', '/stop'], 'GlobalController')
@@ -21,28 +27,3 @@ db.once('open', () => {
   tg.controller('GlobalController', GlobalController(tg))
   tg.controller('GameController', GameController(tg))
 })
-
-// tg.controller('PingController', ($) => {
-//   tg.for('gay', () => {
-//     $.sendMessage('alexandre yoshinaga')
-//   })
-//   // tg.for('/vote :person', () => {
-//   //   console.log($.query.person)
-//   //   cache.push($.query.person);
-//   //   $.sendMessage(cache.join(', '))
-//   // });
-//   tg.for('pm', () => {
-//     tg.sendMessage(210991046, 'This is a private message');
-//   })
-//   tg.for('/vote', () => {
-//     console.dir($)
-//     let user = $.user
-//
-//     $.runMenu({
-//         message: 'Select:',
-//         layout: [1, 2],
-//         'Success ✅': () => {},
-//         'Failure ❌': () => {}
-//     })
-//   });
-// })

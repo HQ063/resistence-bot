@@ -21,7 +21,7 @@ gulp.task('lint', function () {
 })
 
 gulp.task('watch', () => {
-  return gulp.watch('src/**/*.js', ['lint', 'babel'])
+  return gulp.watch('src/**/*.js', ['babel'])
 })
 
 gulp.task('default', ['lint', 'babel'])

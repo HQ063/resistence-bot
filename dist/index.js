@@ -1,5 +1,13 @@
 'use strict';
 
+var _mongoose = require('mongoose');
+
+var _mongoose2 = _interopRequireDefault(_mongoose);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
 var _vote = require('./controllers/vote');
 
 var _vote2 = _interopRequireDefault(_vote);
@@ -14,15 +22,19 @@ var _game2 = _interopRequireDefault(_game);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var tg = require('telegram-node-bot')(process.env.RESISTENCE_BOT_TOKEN);
-var mongoose = require('mongoose');
+// Register App globals
+global.App = {
+  root: _path2.default.resolve(__dirname, '..')
+};
 
 // Connect to db
-mongoose.connect('mongodb://localhost/resistence_bot');
-var db = mongoose.connection;
+_mongoose2.default.connect('mongodb://localhost/resistence_bot');
+var db = _mongoose2.default.connection;
 
 db.once('open', function () {
   console.log('Connected to resistence_bot db');
+
+  var tg = require('telegram-node-bot')(process.env.RESISTENCE_BOT_TOKEN);
 
   tg.router.when(['/start', '/help', '/settings', '/stop'], 'GlobalController').when(['/vote'], 'VoteController').when(['/join', '/stats', '/begin'], 'GameController');
 
@@ -30,28 +42,3 @@ db.once('open', function () {
   tg.controller('GlobalController', (0, _global2.default)(tg));
   tg.controller('GameController', (0, _game2.default)(tg));
 });
-
-// tg.controller('PingController', ($) => {
-//   tg.for('gay', () => {
-//     $.sendMessage('alexandre yoshinaga')
-//   })
-//   // tg.for('/vote :person', () => {
-//   //   console.log($.query.person)
-//   //   cache.push($.query.person);
-//   //   $.sendMessage(cache.join(', '))
-//   // });
-//   tg.for('pm', () => {
-//     tg.sendMessage(210991046, 'This is a private message');
-//   })
-//   tg.for('/vote', () => {
-//     console.dir($)
-//     let user = $.user
-//
-//     $.runMenu({
-//         message: 'Select:',
-//         layout: [1, 2],
-//         'Success ✅': () => {},
-//         'Failure ❌': () => {}
-//     })
-//   });
-// })
