@@ -9,17 +9,17 @@ export default function (tg) {
     tg.for('/start', () => {
       if (chat && chat.type === 'group') {
         let group = new Group({
-          _id : chat.id,
-          name : chat.title,
-          host : $.user // host starts the match
+          _id: chat.id,
+          name: chat.title,
+          host: $.user // host starts the match
         })
         group.save((err, g) => {
           if (err) {
-            console.error(err);
+            console.error(err)
             if (err.code === 11000) {
-              $.sendMessage(`Group already started!`)
+              $.sendMessage('Group already started!')
             } else {
-              $.sendMessage(`Groud id: ${g}`);
+              $.sendMessage(`Groud id: ${g}`)
             }
           }
           $.sendMessage('')
@@ -29,29 +29,29 @@ export default function (tg) {
 
     tg.for('/settings', () => {
       Group.findOne({
-        _id : chat.id
+        _id: chat.id
       }, (err, group) => {
         if (err) throw err
         $.sendMessage(JSON.stringify(group, null, 2))
-      });
+      })
     })
     tg.for('/stop', () => {
       Group.remove({
-        _id : chat.id
+        _id: chat.id
       }, (err) => {
         if (err) {
-          return console.error(err);
+          return console.error(err)
         }
         $.sendMessage('<send match info here>')
       })
     })
     tg.for('/help', () => {
-      var message = ""
-      message += "🔻User\n"
-      message += "> Name: " + user.first_name + "\n"
-      message += "> ID: " + user.id + "\n"
-      message += "🔻Bot\n"
-      message += "> telegram.me/ResistenceBot" + "\n"
+      var message = ''
+      message += '🔻User\n'
+      message += '> Name: ' + user.first_name + '\n'
+      message += '> ID: ' + user.id + '\n'
+      message += '🔻Bot\n'
+      message += '> telegram.me/ResistenceBot\n'
       $.sendMessage(message)
     })
   }

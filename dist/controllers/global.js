@@ -50,12 +50,12 @@ exports.default = function (tg) {
       });
     });
     tg.for('/help', function () {
-      var message = "";
-      message += "🔻User\n";
-      message += "> Name: " + user.first_name + "\n";
-      message += "> ID: " + user.id + "\n";
-      message += "🔻Bot\n";
-      message += "> telegram.me/ResistenceBot" + "\n";
+      var message = '';
+      message += '🔻User\n';
+      message += '> Name: ' + user.first_name + '\n';
+      message += '> ID: ' + user.id + '\n';
+      message += '🔻Bot\n';
+      message += '> telegram.me/ResistenceBot\n';
       $.sendMessage(message);
     });
   };

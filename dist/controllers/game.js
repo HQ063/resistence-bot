@@ -20,12 +20,13 @@ exports.default = function (tg) {
         if (!group) {
           return console.log('Group not found ' + chat.id);
         }
-        console.log(group);
+
         if (_lodash2.default.includes(group.users, user.id)) {
           console.log('User already joined: ' + user.id);
         } else {
           group.users = group.users || [];
           group.users.push(user.id);
+
           group.save(function (err) {
             if (err) {
               return console.error(err);
