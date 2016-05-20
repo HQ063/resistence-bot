@@ -1,14 +1,14 @@
 {
   "name": "resistence-bot",
   "version": "1.0.0",
-  "description": "Resistence bot for telegram groups",
+  "description": "The Resistance Game Bot for Telegram",
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
     "debug": "nodemon --debug dist/index.js"
   },
   "author": "Diego Balduini <dbalduini@gmail.com>",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
     "mongoose": "^4.4.17",
     "telegram-node-bot": "^2.1.2"
