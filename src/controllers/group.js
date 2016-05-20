@@ -13,7 +13,6 @@ export default function (tg) {
       return
     }
 
-
     tg.for('/new', () => {
       let group = new Group({
         _id: chat.id,
@@ -88,14 +87,16 @@ export default function (tg) {
         if (err) {
           return console.error(err)
         }
-        $.sendMessage('' +
-          'total players: ' + group.users.length + '\n' +
-          'users: [' + group.users.join(', ') + ']'
-        )
+        let message = ''
+        message += 'Players:\n'
+        utils.zipWithIndex(group.users).forEach((tuple) => {
+          message += `${tuple[0]}) ${tuple[1]}\n`
+        })
+        $.sendMessage(message)
       })
     })
 
-    tg.for('/start', () => {
+    tg.for('/begin', () => {
       Group.findOne({
         _id: chat.id
       }, function (err, group) {
@@ -140,20 +141,39 @@ export default function (tg) {
     })
 
     tg.for('/stop', () => {
-      Player.remove({
-        'group.id': chat.id
-      }, (err) => {
-        if (err) {
-          console.error(err)
-        }
-      })
-      Group.remove({
-        _id: chat.id
-      }, (err) => {
+      // ONLY THE HOST CAN stop
+
+      // Player.remove({
+      //   'group.id': chat.id
+      // }, (err) => {
+      //   if (err) {
+      //     console.error(err)
+      //   }
+      // })
+      // Group.remove({
+      //   _id: chat.id
+      // }, (err) => {
+      //   if (err) {
+      //     return console.error(err)
+      //   }
+      //   $.sendMessage('<send match info here>')
+      // })
+    })
+
+    tg.for('/mission', () => {
+      var players = _.compact($.args.split(' '))
+
+      if (players.length === 0) {
+        $.sendMessage('Ops! You need to inform at least on player to send.')
+        return
+      }
+      Group.mission(chat.id, players, (err) => {
         if (err) {
           return console.error(err)
         }
-        $.sendMessage('<send match info here>')
+        $.sendMessage('Mission launched 🚀\n\n' +
+            players.join('\n') + '\n' +
+            'Waiting for players to vote...')
       })
     })
   }

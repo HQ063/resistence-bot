@@ -21,7 +21,8 @@ db.once('open', () => {
   tg.router
     .when(['/start', '/help', '/settings', '/rules'], 'GlobalController')
     .when(['/vote', '/me'], 'PlayerController')
-    .when(['/new', '/join', '/stats', '/stop'], 'GroupController')
+    .when(['/new', '/join', '/begin', '/stop',
+           '/stats', '/mission', '/turn', '/launch'], 'GroupController')
 
   tg.controller('GlobalController', GlobalController(tg))
   tg.controller('PlayerController', PlayerController(tg))
