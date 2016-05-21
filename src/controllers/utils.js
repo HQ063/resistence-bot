@@ -14,7 +14,12 @@ function zipWithIndex (arr) {
   return _.zip(indexes, arr)
 }
 
+function warn ($, message) {
+  $.sendMessage('⚠️ ' + message)
+}
+
 export default {
   sendTextFile,
-  zipWithIndex
+  zipWithIndex,
+  warn
 }

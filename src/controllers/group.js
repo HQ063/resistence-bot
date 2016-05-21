@@ -27,7 +27,7 @@ export default function (tg) {
           }
         } else {
           let message = ''
-          message += '🎲 The Match has started 🎲\n🏁\n'
+          message += '🎲 The Match has started 🎲\n\n'
           message += `Host: ${user.first_name}\n`
           message += 'Please add @ResistenceBot\n'
           message += 'use /join to enter'
@@ -38,7 +38,10 @@ export default function (tg) {
 
     tg.for('/join', () => {
       Group.findOne({
-        _id: chat.id
+        _id: chat.id,
+        'users.id': {
+          '$ne': user.id // don't allow the user to join twice
+        }
       }, (err, group) => {
         if (err) {
           return console.error(err)
@@ -48,36 +51,35 @@ export default function (tg) {
           return console.log(`Group not found ${chat.id}`)
         }
 
-        if (_.includes(group.users, user.id)) {
-          console.log(`User already joined: ${user.id}`)
-        } else {
-          group.users = group.users || []
-          group.users.push(user.id)
+        group.users = group.users || []
+        group.users.push({
+          id: user.id,
+          alias: user.first_name + '_' + user.last_name
+        })
 
-          group.save((err) => {
+        group.save((err) => {
+          if (err) {
+            return console.error(err)
+          }
+
+          Player.update({
+            _id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            group: {
+              id: group.id,
+              name: group.name
+            }
+          }, {
+            upsert: true
+          },
+          (err) => {
             if (err) {
               return console.error(err)
             }
-
-            Player.update({
-              _id: user.id,
-              first_name: user.first_name,
-              last_name: user.last_name,
-              group: {
-                id: group.id,
-                name: group.name
-              }
-            }, {
-              upsert: true
-            },
-            (err) => {
-              if (err) {
-                return console.error(err)
-              }
-              $.sendMessage(`User ${user.first_name} has joined`)
-            })
+            $.sendMessage(`User ${user.first_name} has joined`)
           })
-        }
+        })
       })
     })
 
@@ -93,9 +95,13 @@ export default function (tg) {
           return
         }
 
+        let aliases = group.users.map((user) => {
+          return user.alias
+        })
+
         let message = ''
         message += 'Players:\n'
-        utils.zipWithIndex(group.users).forEach((tuple) => {
+        utils.zipWithIndex(aliases).forEach((tuple) => {
           message += `${tuple[0]}) ${tuple[1]}\n`
         })
         $.sendMessage(message)
@@ -104,29 +110,30 @@ export default function (tg) {
 
     tg.for('/begin', () => {
       Group.findOne({
-        _id: chat.id
+        _id: chat.id,
+        'host.id': user.id // only the host may stop
       }, function (err, group) {
         if (err) {
           return console.error(err)
         }
 
         if (!group) {
-          return $.sendMessage('Create the game first /new')
+          utils.warn($, 'Create the game first /new')
+          return
         }
 
-        let roles = Engine.generateRoles(group.users.length)
-        console.log(roles)
+        if (group.users.length < 5) {
+          utils.warn($, 'At least five players is required to begin')
+          return
+        }
 
-        let zipped = _.zip(group.users, roles)
-        let spyGroup = _.groupBy(zipped, (z) => {
-          return z[1]
-        })
-        console.log(spyGroup)
-        zipped.forEach((z) => {
+        let partition = Engine.createPartitionRoles(group.users)
+
+        partition.all.forEach((user) => {
           Player.findOneAndUpdate({
-            _id: z[0]
+            _id: user.id
           }, {
-            'group.role': z[1]
+            'group.role': user.role
           }, {}, (err, player) => {
             if (err) {
               console.error(err)
@@ -134,12 +141,15 @@ export default function (tg) {
             if (!player) {
               return
             }
-            console.log(player)
+
             if (player.group.role === 'spy') {
               // Tell the player who are the spies
-              tg.sendMessage(player._id, 'Spies are ')
+              tg.sendMessage(player._id, 'You are a Spy 😎\n\n' +
+                '📝 Spy List:' + partition.spies.map((spy) => {
+                  return '\n∙ ' + spy.alias
+                }))
             } else {
-              tg.sendMessage(player._id, 'Your role is: resistance')
+              tg.sendMessage(player._id, 'You are from the Resistance 🕵')
             }
           })
         })
@@ -175,7 +185,7 @@ export default function (tg) {
         if (err) {
           return console.error(err)
         }
-        $.sendMessage('Mission launched 🚀\n\n' +
+        $.sendMessage('🚀Mission launched 🚀\n\n' +
             players.join('\n') + '\n' +
             'Waiting for players to vote...')
       })

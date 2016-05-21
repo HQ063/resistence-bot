@@ -13,4 +13,14 @@ let playerSchema = mongoose.Schema({
   timestamps: true
 })
 
+playerSchema.statics.getByIds = function getByIds (ids, callback) {
+  return this.find({
+    _id: {
+      $in: ids
+    }
+  }, (err, players) => {
+    callback(err, players)
+  })
+}
+
 export default mongoose.model('Player', playerSchema)
