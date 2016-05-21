@@ -1,9 +1,0 @@
-💖Add @ResistenceBot to your contacts (required)
-
-👥 Group Commands
-/help - Help about this bot
-/new - Start a new game
-/join - Join the game as a player
-/start - Distribute player roles
-/stop - Stop the game
-/stats - Show game statistics

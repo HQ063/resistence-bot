@@ -11,16 +11,20 @@ export default function (tg) {
       }
     })
 
-    tg.for('/settings', () => {
-      // TODO Not implemented yet
-    })
-
     tg.for('/help', () => {
-      utils.sendTextFile($, 'group-help.txt')
+      if (chat.type === 'group') {
+        utils.sendTextFile($, 'group-help.txt')
+      } else {
+        utils.sendTextFile($, 'private-help.txt')
+      }
     })
 
     tg.for('/rules', () => {
       utils.sendTextFile($, 'rules.txt')
     })
+
+    // tg.for('/settings', () => {
+    //   // TODO Not implemented yet
+    // })
   }
 };

@@ -1,0 +1,19 @@
+💖 Don't forget to add @ResistenceBot
+to your contacts. He will send your
+role and allow you to vote in private.
+
+/help - Show help
+/rules - Show The Resistance rules
+
+👥 Group Commands
+
+/new - Create new game session
+/begin - Start a new turn
+/join - Join a match to play
+/stop - End a game session
+
+/mission <ids> - Choose a player id list,
+separated by space, to send into a mission.
+
+Ex: /mission 0 1 - Will send player 0 and player 1 into a mission
+You can check players id and a lot more with /stats

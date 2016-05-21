@@ -15,17 +15,21 @@ exports.default = function (tg) {
       }
     });
 
-    tg.for('/settings', function () {
-      // TODO Not implemented yet
-    });
-
     tg.for('/help', function () {
-      _utils2.default.sendTextFile($, 'group-help.txt');
+      if (chat.type === 'group') {
+        _utils2.default.sendTextFile($, 'group-help.txt');
+      } else {
+        _utils2.default.sendTextFile($, 'private-help.txt');
+      }
     });
 
     tg.for('/rules', function () {
       _utils2.default.sendTextFile($, 'rules.txt');
     });
+
+    // tg.for('/settings', () => {
+    //   // TODO Not implemented yet
+    // })
   };
 };
 

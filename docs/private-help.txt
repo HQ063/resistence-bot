@@ -1,5 +1,9 @@
 💖Thanks for adding @ResistenceBot to your contacts
 
+/help - Show help
+/rules - Show The Resistance rules
+
 👤 Private Commands
-/vote - Open vote options
+
+/vote - Open vote menu
 /me - Show info about yourself

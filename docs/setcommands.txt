@@ -1,0 +1,9 @@
+help - Show help
+rules - Show The Resistance rules
+vote - Show vote menu 👤
+me - Show info about yourself 👤
+stats - Show game stats 👥
+begin - Start a new turn 👥
+join - Join a match to play 👥
+new - Create new game session 👥
+stop - End a game session 👥

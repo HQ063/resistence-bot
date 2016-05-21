@@ -2,7 +2,7 @@ import fs from 'fs'
 import _ from 'lodash'
 
 function sendTextFile ($, file) {
-  fs.readFile(global.App.root + '/' + file, (err, data) => {
+  fs.readFile(global.App.root + '/docs/' + file, (err, data) => {
     if (err) throw err
     $.sendMessage(data.toString())
   })
