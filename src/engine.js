@@ -12,11 +12,10 @@ function generateRoles (n) {
     return Math.floor(n)
   }
 
-  let totalSpies = round(n * (1))
+  let totalSpies = round(n * (2 / 5))
   let spies = _.times(totalSpies, _.constant('spy'))
   let resistance = _.times(n - totalSpies, _.constant('resistance'))
   let roles = _.concat(resistance, spies)
-  console.log(roles)
   return _.shuffle(roles)
 }
 
