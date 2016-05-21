@@ -180,13 +180,19 @@ export default function (tg) {
         $.sendMessage('Ops! You need to inform at least on player to send.')
         return
       }
-      Group.mission(chat.id, players, (err) => {
+
+      Group.mission(chat.id, players, (err, users) => {
         if (err) {
           return console.error(err)
         }
+
+        let names = users.map((user) => {
+          return user.name
+        })
+
         $.sendMessage('🚀Mission launched 🚀\n\n' +
-            players.join('\n') + '\n' +
-            'Waiting for players to vote...')
+            names.join('\n') + '\n\n' +
+            'Waiting for players to vote.. 💤')
       })
     })
   }

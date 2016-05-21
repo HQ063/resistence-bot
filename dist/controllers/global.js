@@ -27,6 +27,10 @@ exports.default = function (tg) {
       _utils2.default.sendTextFile($, 'rules.txt');
     });
 
+    tg.for('/team', function () {
+      _utils2.default.sendTextFile($, 'team.txt');
+    });
+
     // tg.for('/settings', () => {
     //   // TODO Not implemented yet
     // })

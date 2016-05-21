@@ -23,6 +23,10 @@ export default function (tg) {
       utils.sendTextFile($, 'rules.txt')
     })
 
+    tg.for('/team', () => {
+      utils.sendTextFile($, 'team.txt')
+    })
+
     // tg.for('/settings', () => {
     //   // TODO Not implemented yet
     // })

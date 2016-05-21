@@ -68,7 +68,12 @@ groupSchema.statics.mission = function mission(_id, players, callback) {
           players: usersId
         }
       }
-    }, callback);
+    }, function (err) {
+      if (err) {
+        return callback(err);
+      }
+      callback(null, group.users);
+    });
   });
 };
 

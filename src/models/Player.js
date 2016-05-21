@@ -30,11 +30,13 @@ playerSchema.methods.joinMatch = function joinMatch (newPlayer, callback) {
     if (err) {
       return console.error(err)
     }
-    if (!player) {
-      newPlayer.save((err) => {
-        callback(err)
-      })
+    // Player already created
+    if (player) {
+      return callback(null)
     }
+    newPlayer.save((err) => {
+      callback(err)
+    })
   })
 }
 

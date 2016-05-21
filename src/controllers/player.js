@@ -17,15 +17,21 @@ export default function (tg) {
 
     function handleVote (vote) {
       Group.findOne({
-        'users': user.id
+        'users.id': user.id
       }, (err, group) => {
         if (err) {
           return console.error(err)
         }
+
         if (!group) {
           return console.log('Group not found:', user.id)
         }
-        if (_.includes(group.mission.players, user.id)) {
+
+        let playerIds = group.mission.players.map((player) => {
+          return player.id
+        })
+
+        if (_.includes(playerIds, user.id)) {
           group.mission.votes = group.mission.votes || []
           group.mission.votes.push(vote)
           let votes = group.mission.votes
@@ -60,6 +66,7 @@ export default function (tg) {
             if (err) {
               return console.error(err)
             }
+            Engine.cacheVote(user.id)
             tg.sendMessage(group.id, `${user.first_name} has voted!`)
           })
         } else {
@@ -70,7 +77,6 @@ export default function (tg) {
 
     tg.for('/vote', () => {
       if (Engine.canVote(user.id)) {
-        Engine.cacheVote(user.id)
         $.runMenu({
           message: 'Select:',
           layout: [1, 2],

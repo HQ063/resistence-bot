@@ -19,7 +19,7 @@ db.once('open', () => {
   const tg = require('telegram-node-bot')(process.env.RESISTENCE_BOT_TOKEN)
 
   tg.router
-    .when(['/start', '/help', '/settings', '/rules'], 'GlobalController')
+    .when(['/start', '/help', '/settings', '/rules', '/team'], 'GlobalController')
     .when(['/vote', '/me'], 'PlayerController')
     .when(['/new', '/join', '/begin', '/stop', '/stats', '/mission'], 'GroupController')
 

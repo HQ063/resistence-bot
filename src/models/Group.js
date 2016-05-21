@@ -50,7 +50,12 @@ groupSchema.statics.mission = function mission (_id, players, callback) {
           players: usersId
         }
       }
-    }, callback)
+    }, (err) => {
+      if (err) {
+        return callback(err)
+      }
+      callback(null, group.users)
+    })
   })
 }
 
