@@ -62,7 +62,7 @@ export default function (tg) {
             return console.error(err)
           }
 
-          Player.update({
+          let player = new Player({
             _id: user.id,
             first_name: user.first_name,
             last_name: user.last_name,
@@ -70,10 +70,9 @@ export default function (tg) {
               id: group.id,
               name: group.name
             }
-          }, {
-            upsert: true
-          },
-          (err) => {
+          })
+
+          player.joinMatch(player, (err) => {
             if (err) {
               return console.error(err)
             }

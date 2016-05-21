@@ -23,4 +23,19 @@ playerSchema.statics.getByIds = function getByIds (ids, callback) {
   })
 }
 
+playerSchema.methods.joinMatch = function joinMatch (newPlayer, callback) {
+  return this.model('Player').findOne({
+    _id: newPlayer._id
+  }, (err, player) => {
+    if (err) {
+      return console.error(err)
+    }
+    if (!player) {
+      newPlayer.save((err) => {
+        callback(err)
+      })
+    }
+  })
+}
+
 export default mongoose.model('Player', playerSchema)
