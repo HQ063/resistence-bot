@@ -25,10 +25,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Register App globals
 global.App = {
   root: _path2.default.resolve(__dirname, '..')
-};
 
-// Connect to db
-_mongoose2.default.connect('mongodb://localhost/resistence_bot');
+  // Connect to db
+};_mongoose2.default.connect('mongodb://localhost/resistence_bot');
 var db = _mongoose2.default.connection;
 
 db.once('open', function () {
