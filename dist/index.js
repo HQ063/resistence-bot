@@ -27,7 +27,7 @@ global.App = {
   root: _path2.default.resolve(__dirname, '..')
 
   // Connect to db
-};_mongoose2.default.connect('mongodb://localhost/resistence_bot');
+};_mongoose2.default.connect('mongodb://dbuser:password@ds255308.mlab.com:55308/resistence-tg-bot');
 var db = _mongoose2.default.connection;
 
 db.once('open', function () {
