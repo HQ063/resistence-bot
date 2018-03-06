@@ -34,7 +34,7 @@ db.once('open', function () {
   console.log('Connected to resistence_bot db');
 
   var tg = require('telegram-node-bot')(process.env.RESISTENCE_BOT_TOKEN);
-
+  console.log(process.env.RESISTENCE_BOT_TOKEN);
   tg.router.when(['/start', '/help', '/settings', '/rules', '/team'], 'GlobalController').when(['/vote', '/me'], 'PlayerController').when(['/new', '/join', '/begin', '/stop', '/stats', '/mission'], 'GroupController');
 
   tg.controller('GlobalController', (0, _global2.default)(tg));
